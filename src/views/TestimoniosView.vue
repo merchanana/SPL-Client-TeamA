@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h2>Testimonios Software Project Leader</h2>
-    <h3>Team B</h3>
+    <h3>Team A</h3>
     <v-row>
       <v-col v-for="testimonio in testimonios" :key="testimonio.id" cols="12" sm="6" md="5" lg="3">
         <v-card shaped class="mb-4">
@@ -32,7 +32,7 @@ export default {
   methods: {
     // Solicitud HTTP GET para obtener los testimonios desde el servidor
     obtenerTestimonios() {
-      fetch('http://localhost:3000/api/obtener-testimonios')
+      fetch('http://localhost:3001/api/obtener-testimonios')
         .then(response => response.json())
         .then(data => {
           this.testimonios = data;

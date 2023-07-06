@@ -1,4 +1,4 @@
-# testimonial-team-b
+# testimonial-team-a
 
 ## Project setup
 
