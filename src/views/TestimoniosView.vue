@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h2>Testimonios Software Project Leader</h2>
+    <h3>Team B</h3>
     <v-row>
       <v-col v-for="testimonio in testimonios" :key="testimonio.id" cols="12" sm="6" md="5" lg="3">
         <v-card shaped class="mb-4">
@@ -18,8 +19,6 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
-
   data() {
     return {
       testimonios: [],
@@ -27,12 +26,12 @@ export default {
   },
 
   created() {
-    this.fetchTestimonios();
+    this.obtenerTestimonios();
   },
 
   methods: {
-    fetchTestimonios() {
-      fetch('http://localhost:3000/api/obtener-testimonios')
+    obtenerTestimonios() {
+      fetch(`${process.env.VUE_APP_API_HOST}${process.env.VUE_APP_GET_PATH}`)
         .then(response => response.json())
         .then(data => {
           this.testimonios = data;
@@ -46,7 +45,8 @@ export default {
 </script>
 
 <style scoped>
-h2 {
+h2,
+h3 {
   text-align: center;
   font-size: 35px;
   font-weight: bold;

@@ -81,6 +81,7 @@ export default {
     this.obtenerTestimonios();
   },
   methods: {
+    // Solicitud HTTP GET para obtener los testimonios desde el servidor
     async obtenerTestimonios() {
       try {
         const response = await fetch('http://localhost:3000/api/obtener-testimonios');
@@ -90,6 +91,7 @@ export default {
         console.error(error);
       }
     },
+    // Solicitud HTTP POST para crear un testimonio desde el servidor
     async crearTestimonio() {
       try {
         const testimonio = {
@@ -118,6 +120,7 @@ export default {
         console.error(error);
       }
     },
+    // Solicitud HTTP DELETE para eliminar un testimonio desde el servidor
     async eliminarTestimonio(id) {
       try {
         const response = await fetch(`http://localhost:3000/api/eliminar-testimonio/${id}`, {
@@ -134,21 +137,7 @@ export default {
         console.error(error);
       }
     },
-    openCrearModal() {
-      this.crearModal = true;
-    },
-    openActualizarModal(testimonio) {
-      this.testimonioActual = { ...testimonio };
-      this.actualizarModal = true;
-    },
-    cerrarCrearModal() {
-      this.crearModal = false;
-      // this.nuevoNombre = '';
-      // this.nuevaDescripcion = '';
-    },
-    cerrarActualizarModal() {
-      this.actualizarModal = false;
-    },
+    // Solicitud HTTP PUT para actualizar un testimonio desde el servidor
     async actualizarTestimonio() {
       try {
         const testimonio = {
@@ -175,7 +164,22 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    }
+    },
+    openCrearModal() {
+      this.crearModal = true;
+    },
+    openActualizarModal(testimonio) {
+      this.testimonioActual = { ...testimonio };
+      this.actualizarModal = true;
+    },
+    cerrarCrearModal() {
+      this.crearModal = false;
+      this.nuevoNombre = '';
+      this.nuevaDescripcion = '';
+    },
+    cerrarActualizarModal() {
+      this.actualizarModal = false;
+    },
   },
   watch: {
     mensaje(newValue) {

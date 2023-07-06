@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="#165C66" dark>
       <div class="d-flex justify-space-between align-center header-container">
-        <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="./assets/lihtsus-logo.svg"
+        <v-img alt="Lihtsus Logo" class="shrink mr-2" contain src="./assets/lihtsus-logo.svg"
           transition="scale-transition" width="80" />
         <div>
           <v-btn text to="/" exact>
