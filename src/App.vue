@@ -1,28 +1,41 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar app color="#165C66" dark>
+      <div class="d-flex justify-space-between align-center header-container">
+        <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="./assets/lihtsus-logo.svg"
+          transition="scale-transition" width="80" />
+        <div>
+          <v-btn text to="/" exact>
+            Testimonios
+          </v-btn>
+
+          <v-btn text to="/crud" exact>
+            CRUD
+          </v-btn>
+        </div>
+      </div>
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+
+  data: () => ({
+    //
+  }),
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.header-container {
+  width: 100%;
 }
 </style>
