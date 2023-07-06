@@ -30,8 +30,9 @@ export default {
   },
 
   methods: {
+    // Solicitud HTTP GET para obtener los testimonios desde el servidor
     obtenerTestimonios() {
-      fetch(`${process.env.VUE_APP_API_HOST}${process.env.VUE_APP_GET_PATH}`)
+      fetch('http://localhost:3000/api/obtener-testimonios')
         .then(response => response.json())
         .then(data => {
           this.testimonios = data;
