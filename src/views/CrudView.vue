@@ -5,15 +5,15 @@
       <v-btn color="primary" @click="openCrearModal">Agregar Testimonio</v-btn>
     </div>
 
-    <v-alert v-if="mensaje" type="success" dismissible @input="mensaje = ''">
+    <v-alert v-if="mensaje" :type="alertColor" dismissible @input="mensaje = ''">
       {{ mensaje }}
     </v-alert>
 
     <v-data-table :headers="headers" :items="testimonios" :items-per-page="5" class="elevation-1">
       <!-- eslint-disable-next-line vue/valid-v-slot -->
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="openActualizarModal(item)">mdi-pencil</v-icon>
-        <v-icon small @click="eliminarTestimonio(item.id)">mdi-delete</v-icon>
+        <v-icon small color="success" class="mr-2" @click="openActualizarModal(item)">mdi-pencil</v-icon>
+        <v-icon small color="error" @click="eliminarTestimonio(item.id)">mdi-delete</v-icon>
       </template>
     </v-data-table>
 
@@ -30,6 +30,7 @@
           <v-form @submit.prevent="crearTestimonio">
             <v-text-field v-model="nuevoNombre" label="Nombre"></v-text-field>
             <v-textarea v-model="nuevaDescripcion" label="Descripción"></v-textarea>
+            <v-text-field v-model="nuevaURL" label="URL"></v-text-field>
             <v-btn color="primary" type="submit">Agregar</v-btn>
           </v-form>
         </v-card-text>
@@ -49,6 +50,7 @@
           <v-form @submit.prevent="actualizarTestimonio">
             <v-text-field v-model="testimonioActual.nombre" label="Nombre"></v-text-field>
             <v-textarea v-model="testimonioActual.descripcion" label="Descripción"></v-textarea>
+            <v-text-field v-model="testimonioActual.socialUrl" label="URL"></v-text-field>
             <v-btn color="primary" type="submit">Actualizar</v-btn>
           </v-form>
         </v-card-text>
@@ -66,22 +68,25 @@ export default {
         { text: 'ID', value: 'id' },
         { text: 'Autor', value: 'nombre' },
         { text: 'Testimonio', value: 'descripcion' },
+        { text: 'Red Social', value: 'socialUrl' },
         { text: 'Acciones', value: 'actions', sortable: false }
       ],
       nuevoNombre: '',
       nuevaDescripcion: '',
+      nuevaURL: '',
       testimonioActual: {},
       mensaje: '',
+      type: '',
       crearModal: false,
       actualizarModal: false
     };
   },
   created() {
-    // Realizar solicitud HTTP para obtener los testimonios desde el servidor
+    // Realizar solicitud HTTP para obtener los testimonios
     this.obtenerTestimonios();
   },
   methods: {
-    // Solicitud HTTP GET para obtener los testimonios desde el servidor
+    // Solicitud HTTP GET para obtener los testimonios
     async obtenerTestimonios() {
       try {
         const response = await fetch('http://localhost:3001/api/obtener-testimonios');
@@ -91,12 +96,13 @@ export default {
         console.error(error);
       }
     },
-    // Solicitud HTTP POST para crear un testimonio desde el servidor
+    // Solicitud HTTP POST para crear un testimonio
     async crearTestimonio() {
       try {
         const testimonio = {
           nombre: this.nuevoNombre,
-          descripcion: this.nuevaDescripcion
+          descripcion: this.nuevaDescripcion,
+          socialUrl: this.nuevaURL
         };
 
         const response = await fetch('http://localhost:3001/api/crear-testimonio', {
@@ -110,7 +116,9 @@ export default {
         if (response.ok) {
           this.nuevoNombre = '';
           this.nuevaDescripcion = '';
+          this.nuevaURL = '';
           this.mensaje = 'Testimonio agregado correctamente';
+          this.type = 'Success'
           this.obtenerTestimonios();
           this.cerrarCrearModal();
         } else {
@@ -120,7 +128,7 @@ export default {
         console.error(error);
       }
     },
-    // Solicitud HTTP DELETE para eliminar un testimonio desde el servidor
+    // Solicitud HTTP DELETE para eliminar un testimonio
     async eliminarTestimonio(id) {
       try {
         const response = await fetch(`http://localhost:3001/api/eliminar-testimonio/${id}`, {
@@ -129,6 +137,7 @@ export default {
 
         if (response.ok) {
           this.mensaje = 'Testimonio eliminado correctamente';
+          this.type = 'Success'
           this.obtenerTestimonios();
         } else {
           console.error('Error al eliminar el testimonio');
@@ -137,13 +146,14 @@ export default {
         console.error(error);
       }
     },
-    // Solicitud HTTP PUT para actualizar un testimonio desde el servidor
+    // Solicitud HTTP PUT para actualizar un testimonio
     async actualizarTestimonio() {
       try {
         const testimonio = {
           id: this.testimonioActual.id,
           nombre: this.testimonioActual.nombre,
-          descripcion: this.testimonioActual.descripcion
+          descripcion: this.testimonioActual.descripcion,
+          socialUrl: this.testimonioActual.socialUrl
         };
 
         const response = await fetch(`http://localhost:3001/api/actualizar-testimonio/${testimonio.id}`, {
@@ -156,9 +166,13 @@ export default {
 
         if (response.ok) {
           this.mensaje = 'Testimonio actualizado correctamente';
+          this.type = 'Success'
           this.obtenerTestimonios();
           this.cerrarActualizarModal();
         } else {
+          this.mensaje = 'Ups al parecer tienes un error. ¿Y si miras el código del Back-end?';
+          this.type = 'Error'
+          this.cerrarActualizarModal();
           console.error('Error al actualizar el testimonio');
         }
       } catch (error) {
@@ -186,7 +200,18 @@ export default {
       if (newValue) {
         setTimeout(() => {
           this.mensaje = '';
-        }, 3000);
+        }, 5000);
+      }
+    }
+  },
+  computed: {
+    alertColor() {
+      if (this.type === 'Success') {
+        return 'success'; // Cambia 'success' por la clase de color que deseas usar para los mensajes de éxito
+      } else if (this.type === 'Error') {
+        return 'error'; // Cambia 'error' por la clase de color que deseas usar para los mensajes de error
+      } else {
+        return 'info'; // Cambia 'info' por la clase de color que deseas usar para los mensajes informativos
       }
     }
   }
