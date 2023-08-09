@@ -67,7 +67,7 @@ h3 {
 }
 
 .v-card {
-  height: 300px;
+  height: 250px;
   overflow-y: auto;
   padding: 6px;
 }
