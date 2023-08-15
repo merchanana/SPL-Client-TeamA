@@ -89,7 +89,7 @@ export default {
     // Solicitud HTTP GET para obtener los testimonios
     async obtenerTestimonios() {
       try {
-        const response = await fetch('http://localhost:3001/api/obtener-testimonios');
+        const response = await fetch(`${process.env.VUE_APP_SERVER_URL}api/obtener-testimonios`);
         const testimonios = await response.json();
         this.testimonios = testimonios;
       } catch (error) {
@@ -105,7 +105,7 @@ export default {
           socialUrl: this.nuevaURL
         };
 
-        const response = await fetch('http://localhost:3001/api/crear-testimonio', {
+        const response = await fetch(`${process.env.VUE_APP_SERVER_URL}api/crear-testimonio`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ export default {
     // Solicitud HTTP DELETE para eliminar un testimonio
     async eliminarTestimonio(id) {
       try {
-        const response = await fetch(`http://localhost:3001/api/eliminar-testimonio/${id}`, {
+        const response = await fetch(`${process.env.VUE_APP_SERVER_URL}api/eliminar-testimonio/${id}`, {
           method: 'DELETE'
         });
 
@@ -156,7 +156,7 @@ export default {
           socialUrl: this.testimonioActual.socialUrl
         };
 
-        const response = await fetch(`http://localhost:3001/api/actualizar-testimonio/${testimonio.id}`, {
+        const response = await fetch(`${process.env.VUE_APP_SERVER_URL}api/actualizar-testimonio/${testimonio.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
